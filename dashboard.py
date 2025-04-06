@@ -14,7 +14,7 @@ server = app.server  # For deployment if needed
 
 def read_data():
     try:
-        df = pd.read_csv("/Users/jules/Library/CloudStorage/OneDrive-DeVinci/A4/S8/Git Linux/Project/TTE.csv")
+        df = pd.read_csv("TTE.csv")
         # Ensure numeric conversion for price if needed
         df['Price'] = pd.to_numeric(df['Price'], errors='coerce')
         # Convert LastUpdated to datetime
@@ -425,8 +425,8 @@ def update_data(n, chart_type, time_period, technical_indicators):
         key_stats = "No statistics available"
     
     # For the daily report
-    now = datetime.datetime.now()
-    if now.hour >= 20:
+    now = datetime.datetime.now(datetime.timezone.utc) # To take into accouunt that Amazon AWS uses UTC time
+    if now.hour >= 18: #18h UTC is 8pm in Paris
         if not df_today.empty:
             # Compute metrics from today's data only.
             open_price = df_today['Price'].iloc[0]
